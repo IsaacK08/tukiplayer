@@ -16,6 +16,12 @@ let songs = [
   "./files/Danzando.mp3",
   "./files/Santo es el que vive.mp3",
   "./files/Espíritu de Dios.mp3",
+  "./files/Santo Espíritu.mp3",
+  "./files/Fuego y Poder.mp3",
+  "./files/X Siempre.mp3",
+  "./files/Lo harás otra vez.mp3",
+  "./files/La bendición.mp3"
+
   
 ];
 let thumbnails = [
@@ -23,9 +29,14 @@ let thumbnails = [
   "img/danzando.jpg",
   "img/santo.jpg",
   "img/god spirit.jpg",
+  "img/holy spirit.jpg",
+  "img/fuego y poder.jpg",
+  "img/x siempre.jpg",
+  "img/do it again.jpg",
+  "img/la bendición.jpg"
 ];
-let songArtists = ["Montesanto", "Gateway Worship", "Montesanto", "Majo y Dan", "Averly Morillo", "Barak", "Un Corazón", "Elevation Worship"];
-let songTitles = ["Fiesta en el desierto", "Danzando", "Santo es el que vive", "Espíritu de Dios", "Santo Espíritu", "Fuego y Poder", "X Siempre", "Lo harás otra vez"];
+let songArtists = ["Montesanto", "Gateway Worship", "Montesanto", "Majo y Dan", "Averly Morillo", "Barak", "Un Corazón", "Elevation Worship", "Latinoamérica"];
+let songTitles = ["Fiesta en el desierto", "Danzando", "Santo es el que vive", "Espíritu de Dios", "Santo Espíritu", "Fuego y Poder", "X Siempre", "Lo harás otra vez", "La bendición"];
 function handleClickEachSong(e) {
   const index = parseInt(e.target.dataset.index);
   nextSong(index);
@@ -171,7 +182,7 @@ function generateSearchSuggestions(searchTerm) {
 function displaySearchSuggestions(suggestions) {
   searchSuggestions.innerHTML = "";
 
-  suggestions.forEach((suggestion) => {
+  suggestions.forEach((suggestion, index) => {
     const suggestionElement = document.createElement("div");
     suggestionElement.classList.add("search-suggestion");
     suggestionElement.textContent = suggestion;
@@ -179,14 +190,20 @@ function displaySearchSuggestions(suggestions) {
     suggestionElement.addEventListener("click", function () {
       searchInput.value = suggestion;
       searchSuggestions.innerHTML = "";
-      handleSearch();
-      playSelectedSong(suggestion);
+      playSelectedSong(suggestion, index);
       showPlayerPopupAndPlay(suggestion);
     });
 
     searchSuggestions.appendChild(suggestionElement);
   });
 }
+
+document.addEventListener("click", function (event) {
+  if (!searchSuggestions.contains(event.target) && !searchInput.contains(event.target)) {
+    searchSuggestions.innerHTML = ""; // Limpiar las sugerencias
+  }
+});
+
 
 function playSelectedSong(songTitle) {
   songElements.forEach((songElement, index) => {
@@ -197,6 +214,8 @@ function playSelectedSong(songTitle) {
     }
   });
 }
+
+
 
 function playSong(index) {
   const audioPlayer = document.querySelector("#song");
@@ -222,6 +241,7 @@ function playSong(index) {
 
   audioPlayer.play();
 }
+
 
 function showPlayerPopupAndPlay(songTitle) {
   playerPopup.style.display = "flex";
@@ -256,4 +276,44 @@ function handleBillboardItemClick(event) {
 }
 
 
+// ... Otro código ...
 
+// Manejar el clic en el ícono de reproducción
+songList.addEventListener('click', function(event) {
+  const playIcon = event.target.closest('.song-play'); // Encuentra el ícono de reproducción más cercano al elemento clicado
+
+  if (playIcon) {
+    const songElement = playIcon.closest('.song'); // Encuentra el contenedor .song alrededor del ícono de reproducción
+    const songIndex = parseInt(songElement.getAttribute('data-index'));
+
+    playSong(songIndex);
+  }
+});
+
+
+
+const saveButton = document.getElementById('saveButton');
+
+saveButton.addEventListener('click', () => {
+    // Aquí puedes implementar la lógica para guardar las preferencias del usuario
+    alert('Cambios guardados correctamente');
+});
+
+
+const image = document.querySelector('.image');
+const hover = document.querySelector('.hover');
+const modal = document.querySelector('.modal');
+const close = document.querySelector('.close');
+
+function show(){
+    hover.classList.add('active');
+    modal.classList.add('show');
+}
+
+function hide(){
+    hover.classList.remove('active');
+    modal.classList.remove('show');
+}
+
+image.addEventListener('click', show);
+close.addEventListener('click', hide);
